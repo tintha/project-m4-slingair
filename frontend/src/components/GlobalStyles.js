@@ -93,6 +93,14 @@ input {
   font-family: ${themeVars.contentFont};
 }
 
+select {
+  font-size: 1.3rem;
+  padding: 2px 5px;
+  color: ${themeVars.alabamaCrimson};
+  border-radius: 5px;
+  margin-left: 20px;
+}
+
   input {
     font-size: 24px;
     height: 42px;

@@ -2,24 +2,16 @@ import React from "react";
 import styled from "styled-components";
 
 import { themeVars } from "./GlobalStyles";
-import tombstone from "../assets/tombstone.png";
 
-const Confirmation = (props) => {
+const Profile = (props) => {
   const { seat, givenName, surname, email, flightNumber, id } = props.user;
 
-  return <>
-  <Wrapper>
-    <Confirmed>Your flight is confirmed!</Confirmed>
-    <Text><Bold>Reservation #:</Bold> {id}</Text>
-    <Text><Bold>Flight #:</Bold> {flightNumber}</Text>
-    <Text><Bold>seat #:</Bold> {seat}</Text>
-    <Text><Bold>Name:</Bold> {givenName} {surname}</Text>
+  return <Wrapper>
+    <SectionTitle>Profile</SectionTitle>
+    <Text><Bold>First Name:</Bold> {givenName}</Text>
+    <Text><Bold>Last Name:</Bold> {surname}</Text>
     <Text><Bold>Email:</Bold> {email}</Text>
-  </Wrapper>
-  <ImageWrapper>
-    <img src={tombstone} width="200" alt="tombstone" />
-  </ImageWrapper>  
-  </>
+  </Wrapper>;
 };
 
 const Wrapper = styled.div`
@@ -28,11 +20,7 @@ const Wrapper = styled.div`
   padding: 40px;
 `;
 
-const ImageWrapper = styled.div`
-  margin: auto;
-`;
-
-const Confirmed = styled.h4`
+const SectionTitle = styled.h4`
   color: ${themeVars.alabamaCrimson};
   font-family: ${themeVars.contentFont};
   border-bottom: 3px solid ${themeVars.alabamaCrimson};
@@ -50,4 +38,4 @@ const Text = styled.p`
   padding-bottom: 10px;
 `;
 
-export default Confirmation;
+export default Profile;

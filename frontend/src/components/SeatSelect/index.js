@@ -5,17 +5,19 @@ import Form from "./Form";
 
 const initialState = { seat: "", givenName: "", surname: "", email: "" };
 
-const SeatSelect = ({ updateUserReservation }) => {
+const SeatSelect = (props) => {
+  const { updateLocalStorage } = props;
   const history = useHistory();
   const [flightNumber, setFlightNumber] = useState(null);
   const [formData, setFormData] = useState(initialState);
   const [disabled, setDisabled] = useState(true);
   const [subStatus, setSubStatus] = useState("idle");
+  
 
   useEffect(() => {
     // This hook is listening to state changes and verifying whether or not all
     // of the form data is filled out.
-    Object.values(formData).includes("") || flightNumber === ""
+    Object.values(formData).includes("") || flightNumber === "" || flightNumber === "Select a flight"
       ? setDisabled(true)
       : setDisabled(false);
   }, [flightNumber, formData, setDisabled]);
@@ -44,20 +46,45 @@ const SeatSelect = ({ updateUserReservation }) => {
   const handleSubmit = (ev) => {
     ev.preventDefault();
     if (validateEmail()) {
-      // TODO: Send data to the server for validation/submission
-      // TODO: if 201, add reservation id (received from server) to localStorage
-      // TODO: if 201, redirect to /confirmed (push)
+      // Send data to the server for validation/submission
+      // if 201, add reservation id (received from server) to localStorage
+      // if 201, redirect to /confirmed (push)
       // TODO: if error from server, show error to user (stretch goal)
+      fetch("/reservations", {
+        method: "POST",
+        body: JSON.stringify({...formData, flightNumber}),
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+      })
+        .then((res) => res.json())
+        .then((json) => {
+          const { status, data } = json;
+          if (status === 201) {
+          setSubStatus("confirmed");
+          localStorage.setItem("id", `${data.newReservation.id}`);
+          updateLocalStorage(data.newReservation.id);
+          } else {
+            setSubStatus("error");
+          }
+        });
+
+
     }
   };
 
   return (
+    
     <>
+    
       <FlightSelect
         flightNumber={flightNumber}
         handleFlightSelect={handleFlightSelect}
       />
       <h2>Select your seat and Provide your information!</h2>
+
+      
       <Form
         flightNumber={flightNumber}
         formData={formData}
@@ -67,7 +94,12 @@ const SeatSelect = ({ updateUserReservation }) => {
         disabled={disabled}
         subStatus={subStatus}
       />
+      
+        
+      {subStatus === "confirmed" && history.push('/confirmed')}
     </>
+
+
   );
 };
 
