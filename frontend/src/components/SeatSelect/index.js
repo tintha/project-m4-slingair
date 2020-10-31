@@ -7,6 +7,7 @@ const initialState = { seat: "", givenName: "", surname: "", email: "" };
 
 const SeatSelect = (props) => {
   const { updateLocalStorage } = props;
+  const { updateUserReservation } = props;
   const history = useHistory();
   const [flightNumber, setFlightNumber] = useState(null);
   const [formData, setFormData] = useState(initialState);
@@ -65,6 +66,7 @@ const SeatSelect = (props) => {
           setSubStatus("confirmed");
           localStorage.setItem("id", `${data.newReservation.id}`);
           updateLocalStorage(data.newReservation.id);
+          updateUserReservation({...data.newReservation})
           } else {
             setSubStatus("error");
           }

@@ -124,17 +124,13 @@ const deleteReservation = (req, res) => {
 const updateReservation = (req, res) => {
   const { id } = req.params;
   const newUpdate = req.body;
-  const { newFlight, newSeat, newName, newSurname, newEmail } = newUpdate;
+  const { newName, newSurname, newEmail } = newUpdate;
   // find the reservation
   const reservation = reservations.find((reserv) => reserv.id === id);
-  // find its index
-  const theIndex = reservations.indexOf(reservation);
-  // update properties... 
-  reservations[theIndex].flight = `${newFlight}`;
-  reservations[theIndex].seat = `${newSeat}`;
-  reservations[theIndex].givenName = `${newName}`;
-  reservations[theIndex].surname = `${newSurname}`;
-  reservations[theIndex].email = `${newEmail}`;
+   // update properties... 
+  reservation.givenName = `${newName}`;
+  reservation.surname = `${newSurname}`;
+  reservation.email = `${newEmail}`;
 
   if (!reservation) {
     res.status(404).json({
@@ -149,6 +145,7 @@ const updateReservation = (req, res) => {
     })
   }
 };
+
 
 module.exports = {
   getFlights,

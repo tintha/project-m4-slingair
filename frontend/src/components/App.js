@@ -26,9 +26,8 @@ const App = () => {
     // check localStorage for an id
     // if yes, get data from server and add it to state
     let currentId = localStorage.getItem('id');
-    setLocalId(currentId);
-    if (localId || localId !== '') {
-      fetch(`/reservations/${localId}`, {
+    if (currentId || currentId !== '') {
+      fetch(`/reservations/${currentId}`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -39,16 +38,16 @@ const App = () => {
         updateUserReservation({...data.data.reservation});
       });
     }
-  }, [localId]);
+  }, []);
 
   return (
     <BrowserRouter>
       <GlobalStyles />
-      <Header localId={localId} />
+      <Header />
       <Main>
         <Switch>
           <Route exact path="/">
-            <SeatSelect updateLocalStorage={updateLocalStorage} />
+            <SeatSelect updateLocalStorage={updateLocalStorage} updateUserReservation={updateUserReservation}/>
           </Route>
           <Route exact path="/confirmed">
             <Confirmation user={userReservation}/>
@@ -57,7 +56,7 @@ const App = () => {
             <Reservation user={userReservation} />
           </Route>
           <Route exact path="/profile">
-            <Profile user={userReservation}/>
+            <Profile user={userReservation} updateUserReservation={updateUserReservation}/>
           </Route>
           <Route path="">404: Oops!</Route>
         </Switch>

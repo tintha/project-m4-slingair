@@ -1,16 +1,90 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
+import { useHistory } from "react-router-dom";
+
 
 import { themeVars } from "./GlobalStyles";
 
 const Profile = (props) => {
-  const { seat, givenName, surname, email, flightNumber, id } = props.user;
+  const { updateUserReservation } = props;
+  const { seat, givenName, surname, email, flightNumber, id, customerId } = props.user;
+  const [updateData, setUpdateData] = useState({newName: givenName, newSurname: surname, newEmail: email});
+  const [subStatus, setSubStatus] =  useState('iddle');
 
+  const handleChange = (e) => {
+    const name = e.target.name;
+    const value = e.target.value;
+    setUpdateData({...updateData, [name]: value});
+  }
+  
+  const handleUpdate = (e) => {
+    e.preventDefault();
+    fetch(`/reservations/${id}`, {
+      method: "PATCH",
+      body: JSON.stringify({...updateData}),
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+    })
+      .then((res) => res.json())
+      .then((json) => {
+        const { status, data } = json;
+        if (status === 200) {
+        setSubStatus("confirmed");
+        updateUserReservation({...data.reservation});
+        } else {
+          setSubStatus("error");
+        }
+      });
+  }
   return <Wrapper>
-    <SectionTitle>Profile</SectionTitle>
-    <Text><Bold>First Name:</Bold> {givenName}</Text>
-    <Text><Bold>Last Name:</Bold> {surname}</Text>
+    {subStatus === 'iddle' &&
+    <>
+    <SectionTitle>Welcome, {givenName}</SectionTitle>
+    <Text><Bold>First name: </Bold>{givenName}</Text>
+    <Text><Bold>Last name:</Bold> {surname}</Text>
     <Text><Bold>Email:</Bold> {email}</Text>
+    <Updatebtn onClick={() => setSubStatus('edit')}>Edit</Updatebtn>
+    </>}
+    {subStatus === 'edit' && 
+    <>
+   <SectionTitle>Update your profile</SectionTitle>
+      <form onSubmit={handleUpdate}>
+      <Text><Bold>First Name:</Bold></Text>
+      <Input 
+        name='newName' 
+        value={updateData.newName} 
+        onChange={handleChange} 
+        type="text" /> 
+      <Text><Bold>Last Name:</Bold></Text>
+      <Input 
+        name='newSurname' 
+        value={updateData.newSurname} 
+        onChange={handleChange} 
+        type="text" />
+      <Text><Bold>Email:</Bold></Text>
+      <Input 
+        name='newEmail' 
+        value={updateData.newEmail} 
+        onChange={handleChange} 
+        type="email" />
+      <Updatebtn 
+        type="submit" 
+        onClick={handleUpdate}>
+          Update
+      </Updatebtn>
+    </form>
+    </>
+}
+    {subStatus === 'confirmed' && 
+    <>
+    <SectionTitle>Profile updated</SectionTitle>
+    <Text><Bold>First name: </Bold>{givenName}</Text>
+    <Text><Bold>Last name:</Bold> {surname}</Text>
+    <Text><Bold>Email:</Bold> {email}</Text>
+    <Updatebtn onClick={() => setSubStatus('iddle')}>Go back</Updatebtn>
+    </>}
   </Wrapper>;
 };
 
@@ -31,11 +105,28 @@ const SectionTitle = styled.h4`
 
 const Bold = styled.span`
   font-weight: bold;
+  font-family: ${themeVars.contentFont};
 `;
 
 const Text = styled.p`
   font-family: ${themeVars.contentFont};
   padding-bottom: 10px;
+  margin-bottom: 10px;
+  margin-top: 16px;
+`;
+
+const Input = styled.input`
+  background-color: ${themeVars.background};
+  border: 1px solid ${themeVars.alabamaCrimson};
+  color: black;
+`;
+
+const Updatebtn = styled.button`
+  background-color: ${themeVars.alabamaCrimson};
+  color: white;
+  margin-top: 20px;
+  display: block;
+  cursor: pointer;
 `;
 
 export default Profile;

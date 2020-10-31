@@ -57,6 +57,9 @@ express()
   // update a reservation
   .patch('/reservations/:id', updateReservation)
 
+  // update a profile
+  //.patch('/profile/:id', updateProfile)
+
   // add new endpoints here ☝️
   // ---------------------------------
   // Nothing to modify below this line

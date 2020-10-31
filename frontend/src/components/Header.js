@@ -6,12 +6,7 @@ import { themeVars } from "./GlobalStyles";
 import slingairLogo from "../assets/logo_text.png";
 
 const Header = (props) => {
-  const { localId } = props;
-  const [reservationId, setReservationId] = useState(localId);
-  
-  useEffect(() => {
-    setReservationId(localId);
-  }, [localId])
+  let reservationId = localStorage.getItem('id');
 
   return (
     <Wrapper>
