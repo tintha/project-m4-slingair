@@ -51,8 +51,10 @@ const addReservations = (req, res) => {
     email
     } = newReservation;
   console.log(newReservation);
-  // generate an ID
+  // generate an ID for the reservation
   newReservation.id = uuidv4();
+  // also assign an ID to the customer
+  newReservation.customerId = uuidv4();
   // I think all validations are handled by the FE?
   reservations.push(newReservation);
   res.status(201).json({
@@ -101,8 +103,7 @@ const deleteReservation = (req, res) => {
   const reservation = reservations.find((reserv) => reserv.id === id);
   // get its index
   const theIndex = reservations.indexOf(reservation);
-  // remove the reservation
-  reservations.splice(theIndex, 1);
+  
   if (!reservation) {
     res.status(404).json({
       status: 404,
@@ -110,6 +111,8 @@ const deleteReservation = (req, res) => {
       message: 'Reservation not found'
     })
   } else {
+    // remove the reservation
+    reservations.splice(theIndex, 1);
     res.status(202).json({
       status: 202,
       message: 'Reservation deleted'
@@ -121,14 +124,17 @@ const deleteReservation = (req, res) => {
 const updateReservation = (req, res) => {
   const { id } = req.params;
   const newUpdate = req.body;
-  const { newSeat } = newUpdate;
+  const { newFlight, newSeat, newName, newSurname, newEmail } = newUpdate;
   // find the reservation
   const reservation = reservations.find((reserv) => reserv.id === id);
   // find its index
   const theIndex = reservations.indexOf(reservation);
-  // update properties... they can just update their seat for now
-  // because name and email should be updated in profile page
+  // update properties... 
+  reservations[theIndex].flight = `${newFlight}`;
   reservations[theIndex].seat = `${newSeat}`;
+  reservations[theIndex].givenName = `${newName}`;
+  reservations[theIndex].surname = `${newSurname}`;
+  reservations[theIndex].email = `${newEmail}`;
 
   if (!reservation) {
     res.status(404).json({
