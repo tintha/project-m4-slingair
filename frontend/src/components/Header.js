@@ -5,7 +5,7 @@ import { NavLink } from "react-router-dom";
 import { themeVars } from "./GlobalStyles";
 import slingairLogo from "../assets/logo_text.png";
 
-const Header = (props) => {
+const Header = ({adminPage}) => {
   let reservationId = localStorage.getItem('id');
 
   return (
@@ -14,7 +14,7 @@ const Header = (props) => {
       <h1>Sling Airlines</h1>
     </Logo>
     <Nav>
-      {reservationId && (
+      {(reservationId && !adminPage) && (
         <>
         <StyledNavLink to="/view-reservation">Reservation</StyledNavLink>
         <StyledNavLink to="/profile">Profile</StyledNavLink>

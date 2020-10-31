@@ -7,12 +7,14 @@ import SeatSelect from "./SeatSelect";
 import Confirmation from "./Confirmation";
 import Reservation from "./Reservation";
 import Profile from "./Profile";
+import Admin from "./Admin";
 import GlobalStyles, { themeVars } from "./GlobalStyles";
 
 
 const App = () => {
   const [userReservation, setUserReservation] = useState({});
   const [localId, setLocalId] = useState('');
+  const [adminPage, setAdminPage] = useState(false);
  
   const updateUserReservation = (newData) => {
     setUserReservation({...userReservation, ...newData});
@@ -43,7 +45,7 @@ const App = () => {
   return (
     <BrowserRouter>
       <GlobalStyles />
-      <Header />
+      <Header adminPage={adminPage}/>
       <Main>
         <Switch>
           <Route exact path="/">
@@ -57,6 +59,9 @@ const App = () => {
           </Route>
           <Route exact path="/profile">
             <Profile user={userReservation} updateUserReservation={updateUserReservation}/>
+          </Route>
+          <Route exact path="/admin">
+            <Admin setAdminPage={setAdminPage}/>
           </Route>
           <Route path="">404: Oops!</Route>
         </Switch>
