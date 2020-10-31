@@ -10,13 +10,22 @@ const Profile = (props) => {
   const { seat, givenName, surname, email, flightNumber, id, customerId } = props.user;
   const [updateData, setUpdateData] = useState({newName: givenName, newSurname: surname, newEmail: email});
   const [subStatus, setSubStatus] =  useState('iddle');
+  const [isDisabled, setDisabled] = useState(false);
+
+  useEffect(() => {
+    // This hook is listening to state changes and verifying whether or not all
+    // of the form data is filled out.
+    Object.values(updateData).includes("")
+      ? setDisabled(true)
+      : setDisabled(false);
+  }, [updateData, setDisabled]);
 
   const handleChange = (e) => {
     const name = e.target.name;
     const value = e.target.value;
     setUpdateData({...updateData, [name]: value});
   }
-  
+
   const handleUpdate = (e) => {
     e.preventDefault();
     fetch(`/reservations/${id}`, {
@@ -49,8 +58,8 @@ const Profile = (props) => {
     </>}
     {subStatus === 'edit' && 
     <>
-   <SectionTitle>Update your profile</SectionTitle>
-      <form onSubmit={handleUpdate}>
+    <SectionTitle>Update your profile</SectionTitle>
+    <form onSubmit={handleUpdate}>
       <Text><Bold>First Name:</Bold></Text>
       <Input 
         name='newName' 
@@ -71,7 +80,8 @@ const Profile = (props) => {
         type="email" />
       <Updatebtn 
         type="submit" 
-        onClick={handleUpdate}>
+        onClick={handleUpdate}
+        disabled={isDisabled}>
           Update
       </Updatebtn>
     </form>
@@ -127,6 +137,10 @@ const Updatebtn = styled.button`
   margin-top: 20px;
   display: block;
   cursor: pointer;
+  &:disabled {
+    cursor: not-allowed;
+    background-color: ${themeVars.desertSand};
+  }
 `;
 
 export default Profile;

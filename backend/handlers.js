@@ -127,7 +127,7 @@ const updateReservation = (req, res) => {
   const { newName, newSurname, newEmail } = newUpdate;
   // find the reservation
   const reservation = reservations.find((reserv) => reserv.id === id);
-   // update properties... 
+  // update properties... 
   reservation.givenName = `${newName}`;
   reservation.surname = `${newSurname}`;
   reservation.email = `${newEmail}`;
