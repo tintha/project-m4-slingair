@@ -13,16 +13,11 @@ import GlobalStyles, { themeVars } from "./GlobalStyles";
 
 const App = () => {
   const [userReservation, setUserReservation] = useState({});
-  const [localId, setLocalId] = useState('');
   const [adminPage, setAdminPage] = useState(false);
  
   const updateUserReservation = (newData) => {
     setUserReservation({...userReservation, ...newData});
   };
-
-  const updateLocalStorage = (newLocalId) => {
-    setLocalId(newLocalId);
-  }
 
   useEffect(() => {
     // check localStorage for an id
@@ -49,7 +44,7 @@ const App = () => {
       <Main>
         <Switch>
           <Route exact path="/">
-            <SeatSelect updateLocalStorage={updateLocalStorage} updateUserReservation={updateUserReservation}/>
+            <SeatSelect updateUserReservation={updateUserReservation}/>
           </Route>
           <Route exact path="/confirmed">
             <Confirmation user={userReservation}/>

@@ -65,7 +65,6 @@ const SeatSelect = (props) => {
           if (status === 201) {
           setSubStatus("confirmed");
           localStorage.setItem("id", `${data.newReservation.id}`);
-          updateLocalStorage(data.newReservation.id);
           updateUserReservation({...data.newReservation})
           } else {
             setSubStatus("error");

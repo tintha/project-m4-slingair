@@ -53,8 +53,6 @@ const addReservations = (req, res) => {
   console.log(newReservation);
   // generate an ID for the reservation
   newReservation.id = uuidv4();
-  // also assign an ID to the customer
-  newReservation.customerId = uuidv4();
   // I think all validations are handled by the FE?
   reservations.push(newReservation);
   res.status(201).json({
