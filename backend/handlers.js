@@ -122,10 +122,35 @@ const deleteReservation = (req, res) => {
 const updateReservation = (req, res) => {
   const { id } = req.params;
   const newUpdate = req.body;
-  const { newName, newSurname, newEmail } = newUpdate;
+  const { newFlight, newSeat } = newUpdate;
   // find the reservation
   const reservation = reservations.find((reserv) => reserv.id === id);
   // update properties... 
+  reservation.flightNumber = `${newFlight}`;
+  reservation.seat = `${newSeat}`;
+
+  if (!reservation) {
+    res.status(404).json({
+      status: 404,
+      data: { id },
+      message: 'Reservation not found'
+    })
+  } else {
+    res.status(200).json({
+      status: 200,
+      data: { reservation }
+    })
+  }
+};
+
+// update profile
+const updateProfile = (req, res) => {
+  const { id } = req.params;
+  const newUpdate = req.body;
+  const { newName, newSurname, newEmail } = newUpdate;
+  // find the reservation associated to the profile
+  const reservation = reservations.find((reserv) => reserv.id === id);
+  // update profile properties... 
   reservation.givenName = `${newName}`;
   reservation.surname = `${newSurname}`;
   reservation.email = `${newEmail}`;
@@ -134,7 +159,7 @@ const updateReservation = (req, res) => {
     res.status(404).json({
       status: 404,
       data: { id },
-      message: 'Reservation not found'
+      message: 'Profile not found'
     })
   } else {
     res.status(200).json({
@@ -153,4 +178,5 @@ module.exports = {
   getSingleReservation,
   deleteReservation,
   updateReservation,
+  updateProfile
 };

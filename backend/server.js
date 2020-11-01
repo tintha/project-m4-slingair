@@ -10,7 +10,8 @@ const { getFlights,
         addReservations,  
         getSingleReservation,
         deleteReservation,
-        updateReservation, } = require("./handlers");
+        updateReservation,
+        updateProfile } = require("./handlers");
 
 express()
   // Below are methods that are included in express(). We chain them for convenience.
@@ -58,7 +59,7 @@ express()
   .patch('/reservations/:id', updateReservation)
 
   // update a profile
-  //.patch('/profile/:id', updateProfile)
+  .patch('/profile/:id', updateProfile)
 
   // add new endpoints here ☝️
   // ---------------------------------
