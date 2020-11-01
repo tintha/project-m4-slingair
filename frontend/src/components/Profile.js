@@ -26,7 +26,7 @@ const Profile = (props) => {
 
   const handleUpdate = (e) => {
     e.preventDefault();
-    fetch(`/reservations/${id}`, {
+    fetch(`/profile/${id}`, {
       method: "PATCH",
       body: JSON.stringify({...updateData}),
       headers: {
