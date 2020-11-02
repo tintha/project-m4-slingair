@@ -53,6 +53,8 @@ const addReservations = (req, res) => {
   console.log(newReservation);
   // generate an ID for the reservation
   newReservation.id = uuidv4();
+  // get seat id 
+  const chosenSeat = flights[flightNumber].find((theSeat) => theSeat.id === seat);
   // check if all fields are there
   if (!flightNumber || !seat || !givenName || !surname || !email) {
     res.status(400).json({
@@ -61,6 +63,7 @@ const addReservations = (req, res) => {
     })
   } else {
     reservations.push(newReservation);
+    chosenSeat.isAvailable = false;
     res.status(201).json({
       status: 201,
       data: { newReservation }
