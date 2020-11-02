@@ -3,18 +3,7 @@ import styled from "styled-components";
 
 import { themeVars } from "../GlobalStyles";
 
-const FlightSelect = ({ flightNumber, handleFlightSelect }) => {
-  const [flights, setFlights] = useState(['Select a flight']);
-
-  useEffect(() => {
-    // fetch the flight numbers
-    fetch("/flights")
-      .then((res) => res.json())
-      .then((data) => {
-        setFlights([...flights, data.data.flightNumbers]);
-      });
-
-  }, []);
+const FlightSelect = ({ flightNumber, handleFlightSelect, flights }) => {
 
   return (
     <Wrapper>

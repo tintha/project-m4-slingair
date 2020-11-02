@@ -40,7 +40,9 @@ const App = () => {
   return (
     <BrowserRouter>
       <GlobalStyles />
-      <Header adminPage={adminPage}/>
+      <Header 
+        adminPage={adminPage}
+        />
       <Main>
         <Switch>
           <Route exact path="/">

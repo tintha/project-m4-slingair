@@ -6,14 +6,22 @@ import Form from "./Form";
 const initialState = { seat: "", givenName: "", surname: "", email: "" };
 
 const SeatSelect = (props) => {
-  const { updateLocalStorage } = props;
   const { updateUserReservation } = props;
   const history = useHistory();
-  const [flightNumber, setFlightNumber] = useState(null);
+  const [flightNumber, setFlightNumber] = useState('');
   const [formData, setFormData] = useState(initialState);
   const [disabled, setDisabled] = useState(true);
   const [subStatus, setSubStatus] = useState("idle");
+  const [flights, setFlights] = useState(['Select a flight']);
   
+  useEffect(() => {
+    // fetch the flight numbers
+    fetch("/flights")
+      .then((res) => res.json())
+      .then((data) => {
+        setFlights([...flights, data.data.flightNumbers]);
+      });
+  }, []);
 
   useEffect(() => {
     // This hook is listening to state changes and verifying whether or not all
@@ -82,6 +90,7 @@ const SeatSelect = (props) => {
       <FlightSelect
         flightNumber={flightNumber}
         handleFlightSelect={handleFlightSelect}
+        flights={flights}
       />
       <h2>Select your seat and Provide your information!</h2>
 

@@ -5,7 +5,7 @@ import { themeVars } from "./GlobalStyles";
 
 const Profile = (props) => {
   const { updateUserReservation } = props;
-  const { seat, givenName, surname, email, flightNumber, id, customerId } = props.user;
+  const { seat, givenName, surname, email, flightNumber, id } = props.user;
   const [updateData, setUpdateData] = useState({newName: givenName, newSurname: surname, newEmail: email});
   const [subStatus, setSubStatus] =  useState('iddle');
   const [isDisabled, setDisabled] = useState(false);

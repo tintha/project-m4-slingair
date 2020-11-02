@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { NavLink } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 
 import { themeVars } from "./GlobalStyles";
 import slingairLogo from "../assets/logo_text.png";
