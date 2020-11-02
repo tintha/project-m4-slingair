@@ -53,12 +53,19 @@ const addReservations = (req, res) => {
   console.log(newReservation);
   // generate an ID for the reservation
   newReservation.id = uuidv4();
-  // I think all validations are handled by the FE?
-  reservations.push(newReservation);
-  res.status(201).json({
-    status: 201,
-    data: { newReservation }
-  })
+  // check if all fields are there
+  if (!flightNumber || !seat || !givenName || !surname || !email) {
+    res.status(400).json({
+      status: 400,
+      message: 'Missing information'
+    })
+  } else {
+    reservations.push(newReservation);
+    res.status(201).json({
+      status: 201,
+      data: { newReservation }
+    })
+  }
 }
 
 // get all reservations
@@ -125,17 +132,22 @@ const updateReservation = (req, res) => {
   const { newFlight, newSeat } = newUpdate;
   // find the reservation
   const reservation = reservations.find((reserv) => reserv.id === id);
-  // update properties... 
-  reservation.flightNumber = `${newFlight}`;
-  reservation.seat = `${newSeat}`;
-
+  
   if (!reservation) {
     res.status(404).json({
       status: 404,
       data: { id },
       message: 'Reservation not found'
     })
+  } else if (!newFlight || !newSeat) {
+    res.status(400).json({
+      status: 400,
+      message: 'Missing information'
+    })
   } else {
+    // update properties... 
+    reservation.flightNumber = `${newFlight}`;
+    reservation.seat = `${newSeat}`;
     res.status(200).json({
       status: 200,
       data: { reservation }
@@ -150,18 +162,23 @@ const updateProfile = (req, res) => {
   const { newName, newSurname, newEmail } = newUpdate;
   // find the reservation associated to the profile
   const reservation = reservations.find((reserv) => reserv.id === id);
-  // update profile properties... 
-  reservation.givenName = `${newName}`;
-  reservation.surname = `${newSurname}`;
-  reservation.email = `${newEmail}`;
-
+  
   if (!reservation) {
     res.status(404).json({
       status: 404,
       data: { id },
       message: 'Profile not found'
     })
+  } else if (!newName || !newSurname || !newEmail) {
+    res.status(400).json({
+      status: 400,
+      message: 'Missing information'
+    })
   } else {
+    // update profile properties... 
+    reservation.givenName = `${newName}`;
+    reservation.surname = `${newSurname}`;
+    reservation.email = `${newEmail}`;
     res.status(200).json({
       status: 200,
       data: { reservation }
