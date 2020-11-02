@@ -119,8 +119,12 @@ const deleteReservation = (req, res) => {
       message: 'Reservation not found'
     })
   } else {
+    // get seat id 
+    const chosenSeat = flights[reservation.flightNumber].find((theSeat) => theSeat.id === reservation.seat);
     // remove the reservation
     reservations.splice(theIndex, 1);
+    // set seat back to available
+    chosenSeat.isAvailable = true;
     res.status(202).json({
       status: 202,
       message: 'Reservation deleted'
@@ -135,7 +139,7 @@ const updateReservation = (req, res) => {
   const { newFlight, newSeat } = newUpdate;
   // find the reservation
   const reservation = reservations.find((reserv) => reserv.id === id);
-  
+
   if (!reservation) {
     res.status(404).json({
       status: 404,
@@ -148,9 +152,17 @@ const updateReservation = (req, res) => {
       message: 'Missing information'
     })
   } else {
+    // get old seat id 
+    const oldSeat = flights[reservation.flightNumber].find((theSeat) => theSeat.id === reservation.seat);
+    // set old seat back to available
+    oldSeat.isAvailable = true;
     // update properties... 
     reservation.flightNumber = `${newFlight}`;
     reservation.seat = `${newSeat}`;
+    // get new seat id
+    const theNewSeat = flights[reservation.flightNumber].find((theSeat) => theSeat.id === reservation.seat);
+    // set new seat to unavailable
+    theNewSeat.isAvailable = false;
     res.status(200).json({
       status: 200,
       data: { reservation }
