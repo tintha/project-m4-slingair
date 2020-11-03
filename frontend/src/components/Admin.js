@@ -8,11 +8,16 @@ const Admin = ({setAdminPage}) => {
 
   const handleDelete = (id) => {
     fetch(`/reservations/${id}`, {
-      method: "DELETE"
-    });
-    const updatedReservations = allReservations.filter((reservation) => reservation.id !== id);
-    setAllReservations(updatedReservations);
-  }
+      method: "DELETE",
+      })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.status === 202) {
+          const updatedReservations = allReservations.filter((reservation) => reservation.id !== id);
+          setAllReservations(updatedReservations);
+        } 
+      })
+    };
 
   useEffect(() => {
     setAdminPage(true);
