@@ -10,17 +10,25 @@ const Header = ({adminPage}) => {
 
   return (
     <Wrapper>
+    {(reservationId && !adminPage) ? 
+    <>
+    <Link to="/">
     <Logo>
       <h1>Sling Airlines</h1>
     </Logo>
+    </Link>
     <Nav>
-      {(reservationId && !adminPage) && (
-        <>
         <StyledNavLink to="/view-reservation">Reservation</StyledNavLink>
         <StyledNavLink to="/profile">Profile</StyledNavLink>
-      </>
-      )}
     </Nav>
+    </>
+      : 
+    <>
+      <Logo>
+        <h1>Sling Airlines</h1>
+      </Logo>
+    </>
+    }
   </Wrapper>
   
 );

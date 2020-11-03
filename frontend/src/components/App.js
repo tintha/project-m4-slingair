@@ -58,7 +58,7 @@ const App = () => {
             <Profile user={userReservation} updateUserReservation={updateUserReservation}/>
           </Route>
           <Route exact path="/admin">
-            <Admin setAdminPage={setAdminPage}/>
+            <Admin setAdminPage={setAdminPage} />
           </Route>
           <Route path="">404: Oops!</Route>
         </Switch>
